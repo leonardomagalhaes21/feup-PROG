@@ -6,8 +6,10 @@ namespace prog
   typedef unsigned char rgb_value;
   class Color
   {
-    private:
-      // TODO: private fields required for color representation.
+    private:    // Incluir os parâmetros privados correspondentes às cores vermelho, azul e verde (RGB)
+      rgb_value red_;
+      rgb_value blue_;
+      rgb_value green_;
     public:
       Color();
       Color(const Color& c);

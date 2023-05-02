@@ -1,32 +1,42 @@
 #include "Image.hpp"
+using namespace std;
 
 namespace prog
 {
-  Image::Image(int w, int h, const Color &fill)
+  Image::Image(int w, int h, const Color &fill)  // Construtor que coloca todos os pixeis da imagem com a cor fill
+  {
+    width_=w;                                  
+    height_=h;
+    for (int i = 0; i < w; i++) {
+      for (int j = 0; j < h; j++) {
+        pixels[i][j] = fill;
+      }
+    }
+  }
+  Image::~Image()       //Destruídor (Não utilizado)
   {
   }
-  Image::~Image()
-  {
-  }
+
+  // Métodos que retornam o valor dos parâmetros largura e altura
+
   int Image::width() const
   {
-    return -1;
+    return width_;
   }
   int Image::height() const
   {
-    return -1;
+    return height_;
   }
 
-  // TODO: remove this DUMMY_color variable once you have appropriate fields for representing image pixels.
-  Color DUMMY_color;
-
+  // Método que retorna referência à cor de um determinado pixel com largura x e altura y
   Color& Image::at(int x, int y)
   {
-    return DUMMY_color;
+    return pixels[x][y];
   }
 
+  // Método que retorna a cor de um determinado pixel com largura x e altura y
   const Color& Image::at(int x, int y) const
   {
-    return DUMMY_color;
+    return pixels[x][y];
   }
 }
