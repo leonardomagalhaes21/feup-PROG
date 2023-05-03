@@ -8,9 +8,11 @@ namespace prog
     width_=w;                                  
     height_=h;
     for (int i = 0; i < w; i++) {
+    vector<Color> linha;
       for (int j = 0; j < h; j++) {
-        pixels[i][j] = fill;
+        linha.push_back(fill);
       }
+      pixels.push_back(linha);
     }
   }
   Image::~Image()       //Destruídor (Não utilizado)

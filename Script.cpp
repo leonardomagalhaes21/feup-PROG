@@ -21,6 +21,7 @@ namespace prog {
             image(nullptr), input(filename) {
 
     }
+    
     void Script::clear_image_if_any() {
         if (image != nullptr) {
             delete image;
@@ -49,60 +50,59 @@ namespace prog {
                 continue;
             }
             if (command == "replace") {
-                replace(rgb_value r1, rgb_value g1 , rgb_value b1 , rgb_value r2, rgb_value g2, rgb_value b2);
+                Color cor1,cor2;
+                input>> cor1;
+                input>> cor2;
+                replace(cor1.red(), cor1.green() , cor1.blue() , cor2.red(), cor2.green(), cor2.blue());
                 continue;
-}
+            }
             if (command == "invert") {
                 invert();
                 continue;
-}
-            if (command == "rotate") {
-                int degrees;
-                input >> degrees;
-                rotate(degrees);
-                continue;
-}
-            if (command == "resize") {
-                int width, height;
-                input >> width >> height;
-                resize(width, height);
+            }
+
+            if(command =="to_gray_scale"){
+                to_gray_scale();
                 continue;
             }
-            
-            if (command == "add"){
-                add (filename ,r, g, b, x, y);
-                continue;
-            }
-}
-}
-}
+        }
+    }
+
             
     
     void Script::invert(){      // Tranforma cada píxel (r, g, b) para (255-r,255-g,255-b).
-        for (int i = 0; i < pixels.width(); i++) {
-        for (int j = 0; j < height_; j++) {
-            pixels[i][j].red()=255-pixels[i][j].red();
-            pixels[i][j].green()=255-pixels[i][j].green();
-            pixels[i][j].blue()=255-pixels[i][j].blue();
+        for (int i = 0; i < image->width(); i++) {
+            for (int j = 0; j < image-> height(); j++){
+                image->at(i,j).red()=255-image->at(i,j).red();
+                image->at(i,j).green()=255- image->at(i,j).green();
+                image->at(i,j).blue()=255- image->at(i,j).blue();
             }
         }
     }
     
     void Script::to_gray_scale(){ //Transforms cada píxel (r, g, b) em (v, v, v) tal que v = (r + g + b)/3.
-        for (int i = 0; i < width(); i++){
-            for (int j = 0; j < height(); j++){
-                rgb_value v = (pixels[i][j].red() + pixels[i][j].green() + pixels[i][j].blue())/3;
-                pixels[i][j].red()= v;
-                pixels[i][j].green()= v;
-                pixels[i][j].blue()= v;
+        for (int i = 0; i < image->width(); i++){
+            for (int j = 0; j < image->height(); j++){
+                rgb_value v = (image->at(i,j).red() + image->at(i,j).green() + image->at(i,j).blue())/3;
+                image->at(i,j).red()= v;
+                image->at(i,j).green()= v;
+                image->at(i,j).blue()= v;
             }
         }
     }
-    void Script::replace (rgb_value r1, rgb_value g1 , rgb_value b1 , rgb_value r2, rgb_value g2, rgb_value b2){}
-    void Script::fill (x ,y ,w ,h ,r ,g ,b){}
-    void Script::h_mirror(){}
-    void Script::v_mirror(){}
-    void Script::add (filename ,r, g, b, x, y);
+    void Script::replace (rgb_value r1, rgb_value g1 , rgb_value b1 , rgb_value r2, rgb_value g2, rgb_value b2){
+        for (int i = 0; i < image->width(); i++) {
+            for (int j = 0; j < image-> height(); j++){
+                if (image->at(i,j).red() == r1 && image->at(i,j).green() == g1 && image->at(i,j).blue() == b1){
+                    image->at(i,j).red()= r2;
+                    image->at(i,j).green()= g2;
+                    image->at(i,j).blue()= b2;
+                }
+            }
+        }
+    }
+    
+        
     void Script::open() {
         // Replace current image (if any) with image read from PNG file.
         clear_image_if_any();
