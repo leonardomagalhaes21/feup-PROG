@@ -213,25 +213,28 @@ namespace prog {
         }
         *image = temp;
     }
-    void Script::rotate_right(){
-        //vector<std::vector<Color>> tmp;
+    void Script::rotate_right() {
+	vector<std::vector<Color>> tmp;
         Image temp (image->height(), image->width());
         for (int i = 0; i < image->height(); i++) {
-            for (int j = 0; j < image->width(); j++) {
-                temp.at(i, j) = image->at(image->height() - j - 1, i);
+            vector<Color> l;
+            for (int j = 0; j < image->width(); j++){
+                l.push_back(image->at(j,i));
+            }
+            tmp.push_back(l);
+        }
+        
+        //troca a ordem das linhas    
+        for (unsigned long y=0;y<tmp[y].size();y++){
+            for (unsigned long x=0;x<tmp.size()/2;x++){
+                swap(tmp[x][y],tmp[tmp.size()-y-1][y]);
             }
         }
-        /*for (unsigned long j = 0; j < tmp.size(); j++){
-            for (unsigned long i = 0; i < tmp[0].size(); i++){
+        for (unsigned long j = 0; j < tmp.size(); j++){
+            for (unsigned long i = 0; i < tmp[j].size(); i++){
                 temp.at(j,i) = tmp[j][i];
             }
         }
-        //troca a ordem das colunas       
-        for (unsigned long x=0;x<tmp.size();x++){
-            for (unsigned long y=0;y<tmp[x].size()/2;y++){
-                swap(temp.at(x,y),temp.at(x,tmp[x].size()-y-1));
-            }
-        }*/
           *image = temp; 
     }
     void Script::rotate_left(){
