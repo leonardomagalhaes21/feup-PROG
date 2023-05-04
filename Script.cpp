@@ -65,6 +65,53 @@ namespace prog {
                 to_gray_scale();
                 continue;
             }
+            if(command =="h_mirror"){
+                h_mirror();
+                continue;
+            }
+            if(command =="v_mirror"){
+                v_mirror();
+                continue;
+            }
+            if(command =="fill"){
+                int x, y, w, h;
+                input >> x >> y >> w >> h;
+                Color c;
+                input>> c;
+                fill (x,y , w , h , c.red() , c.green(), c.blue());
+                continue;
+            }
+            if(command =="add"){
+                std::string filename;
+                int r;
+                int g;
+                int b;
+                int x;
+                int y;
+                input>> filename;
+                input>> r;
+                input>> g;
+                input>> b;
+                input>> x;
+                input>> y;
+                add(filename,r,g,b,x,y);
+                continue;    
+           }
+           if(command =="crop"){
+                int x, y, w, h;
+                input >> x >> y >> w >> h;
+                crop (x, y, w, h);
+                continue;
+            }
+           if(command =="rotate_left"){
+                rotate_left();
+                continue;
+            }
+            if(command =="rotate_right"){
+                rotate_right();
+                continue;
+            }
+            
         }
     }
 
@@ -101,8 +148,117 @@ namespace prog {
             }
         }
     }
-    
+    void Script::fill (int x,int y , int w , int h , rgb_value r , rgb_value g , rgb_value b){
+        for (int i = x; i < x + w; i++) {
+            for (int j = y; j < y + h; j++){
+                image->at(i,j).red()= r;
+                image->at(i,j).green()= g;
+                image->at(i,j).blue()= b;
+            }
+        }
+    }
+    void Script::h_mirror(){        //faz espelho da imagem horizontalmente
+        for (int x=0; x< image->width()/2 ;x++){
+            for (int y=0;y< image->height();y++){
+                Color aux(image->at(x,y).red(),image->at(x,y).green(),image->at(x,y).blue());
+                image->at(x,y).red()=image->at(image->width()-1-x,y).red();
+                image->at(x,y).green()=image->at(image->width()-1-x,y).green();
+                image->at(x,y).blue()=image->at(image->width()-1-x,y).blue();
+                image->at(image->width()-1-x,y)=aux;
+            }
+        }
+    }
+    void Script::v_mirror(){        //faz espelho da imagem verticalmente
+        for (int x=0; x< image->width() ;x++){
+            for (int y=0;y< image->height()/2;y++){
+                Color aux(image->at(x,y).red(),image->at(x,y).green(),image->at(x,y).blue());
+                image->at(x,y).red()=image->at(x,image->height()-1-y).red();
+                image->at(x,y).green()=image->at(x,image->height()-1-y).green();
+                image->at(x,y).blue()=image->at(x,image->height()-1-y).blue();
+                image->at(x,image->height()-1-y)=aux;
+            }
+        }
+    }
+    void Script::add (std::string &filename,int r, int g, int b, int x, int y){
+        Image* imageB;
+        imageB=loadFromPNG(filename);
+        for (int i = 0; i < imageB->width(); i++){
+            for (int j = 0; j < imageB->height(); j++){
+                if ((imageB->at(i,j).red()==r) && (imageB->at(i,j).green() ==g) && (imageB->at(i,j).blue()==b)){
+                    continue;
+                }
+                else{
+                    image->at(x+i,y+j).red()=imageB->at(i,j).red(); 
+                    image->at(x+i,y+j).green() =imageB->at(i,j).green(); 
+                    image->at(x+i,y+j).blue()=imageB->at(i,j).blue();
+                }
+            }
+        }
+        delete imageB;
+    }
+    void Script::crop (int x, int y, int w, int h){ // Faz recorte da imagem
+        vector<std::vector<Color>> tmp;
+        Image temp (w, h);
+        for (int i = x; i < x + w; i++) {
+            vector<Color> l;
+            for (int j = y; j < y + h; j++){
+                l.push_back(image->at(i,j));
+            }
+            tmp.push_back(l);
+        }
+        for (int i = 0; i < w; i++){
+            for (int j = 0; j < h; j++){
+                temp.at(i,j) = tmp[i][j];
+            }
+        }
+        *image = temp;
+    }
+    void Script::rotate_right(){
+        //vector<std::vector<Color>> tmp;
+        Image temp (image->height(), image->width());
+        for (int i = 0; i < image->height(); i++) {
+            for (int j = 0; j < image->width(); j++) {
+                temp.at(i, j) = image->at(image->height() - j - 1, i);
+            }
+        }
+        /*for (unsigned long j = 0; j < tmp.size(); j++){
+            for (unsigned long i = 0; i < tmp[0].size(); i++){
+                temp.at(j,i) = tmp[j][i];
+            }
+        }
+        //troca a ordem das colunas       
+        for (unsigned long x=0;x<tmp.size();x++){
+            for (unsigned long y=0;y<tmp[x].size()/2;y++){
+                swap(temp.at(x,y),temp.at(x,tmp[x].size()-y-1));
+            }
+        }*/
+          *image = temp; 
+    }
+    void Script::rotate_left(){
+        vector<std::vector<Color>> tmp;
+        Image temp (image->height(), image->width());
+        for (int i = 0; i < image->height(); i++) {
+            vector<Color> l;
+            for (int j = 0; j < image->width(); j++){
+                l.push_back(image->at(j,i));
+            }
+            tmp.push_back(l);
+        }
         
+        //troca a ordem das colunas       
+        for (unsigned long x=0;x<tmp.size();x++){
+            for (unsigned long y=0;y<tmp[x].size()/2;y++){
+                swap(tmp[x][y],tmp[x][tmp[x].size()-y-1]);
+            }
+        }
+        for (unsigned long j = 0; j < tmp.size(); j++){
+            for (unsigned long i = 0; i < tmp[0].size(); i++){
+                temp.at(j,i) = tmp[j][i];
+            }
+        }
+          *image = temp; 
+    }
+
     void Script::open() {
         // Replace current image (if any) with image read from PNG file.
         clear_image_if_any();
@@ -125,3 +281,4 @@ namespace prog {
         saveToPNG(filename, image);
     }
 }
+

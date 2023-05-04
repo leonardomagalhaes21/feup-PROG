@@ -8,14 +8,14 @@ namespace prog {
 	blue_=0;
     }
     Color::Color(const Color& other) { // Construtor copia os parâmetros de outra variável do tipo Color
-	this->red_=other.red();
-	this->green_=other.green();
-	this->blue_=other.blue();
+	red_=other.red();
+	green_=other.green();
+	blue_=other.blue();
     }
     Color::Color(rgb_value red, rgb_value green, rgb_value blue) { // Construtor que altera as variáveis para os argumentos da função
-	this->red_=red;
-	this->green_=green;
-	this->blue_=blue;
+	red_=red;
+	green_=green;
+	blue_=blue;
     }
 
     // Métodos que retornam o valor de cada parâmetro
@@ -33,18 +33,15 @@ namespace prog {
     // Métodos que retornam referências aos parâmetros individuais RGB (para que possam ser alterados)
 
     rgb_value& Color::red()  {
-        return this->red_;
+        return red_;
     }
     rgb_value& Color::green()  {
-        return this->green_;
+        return green_;
     }
     rgb_value& Color::blue()  {
-        return this->blue_;
+        return blue_;
     }
 
 }
 
-int main(){
-    return 0
-}
 
