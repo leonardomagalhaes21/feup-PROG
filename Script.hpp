@@ -14,16 +14,17 @@ namespace prog
     ~Script();
     void run();
     // Implementação de novos métodos;
-    void invert(); // Tranforma cada píxel (r, g, b) para (255-r,255-g,255-b).
-    void to_gray_scale(); //Transforms cada píxel (r, g, b) em (v, v, v) tal que v = (r + g + b)/3.
-    void replace (rgb_value r1, rgb_value g1 , rgb_value b1 , rgb_value r2, rgb_value g2, rgb_value b2); // Altera todos os píxeis (r1,  g1, b1) por (r2,  g2, b2).
-    void fill (int x,int y , int w , int h , rgb_value r , rgb_value g , rgb_value b); // Preenche 
+    void invert(); 
+    void to_gray_scale(); 
+    void replace (rgb_value r1, rgb_value g1 , rgb_value b1 , rgb_value r2, rgb_value g2, rgb_value b2); 
+    void fill (int x,int y , int w , int h , rgb_value r , rgb_value g , rgb_value b); 
     void h_mirror();
     void v_mirror();
     void add (std::string &filename,int r, int g, int b, int x, int y);
     void crop (int x, int y, int w, int h);
     void rotate_left();
     void rotate_right();
+    void median_filter(int ws);
   private:
     // Current image.
     Image *image;

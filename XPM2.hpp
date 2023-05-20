@@ -4,7 +4,7 @@
 #include <string>
 #include "Image.hpp"
 
-namespace prog {
+namespace prog {    //definição do namespace prog, definido pelos professores
     Image* loadFromXPM2(const std::string &file);
 
     void saveToXPM2(const std::string& file, const Image* img);

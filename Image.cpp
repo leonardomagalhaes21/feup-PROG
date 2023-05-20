@@ -1,5 +1,5 @@
 #include "Image.hpp"
-using namespace std;
+
 
 namespace prog
 {
@@ -8,7 +8,7 @@ namespace prog
     width_=w;                                  
     height_=h;
     for (int i = 0; i < w; i++) {
-    vector<Color> linha;
+    std::vector<Color> linha;
       for (int j = 0; j < h; j++) {
         linha.push_back(fill);
       }

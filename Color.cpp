@@ -1,5 +1,5 @@
 #include "Color.hpp"
-using namespace std;
+
 
 namespace prog {
     Color::Color() {  // Construtor default que inicia todos os parâmetros para 0;

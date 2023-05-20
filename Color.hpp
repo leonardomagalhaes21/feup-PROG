@@ -7,9 +7,9 @@ namespace prog
   class Color
   {
     private:    // Incluir os parâmetros privados correspondentes às cores vermelho, azul e verde (RGB)
-      rgb_value red_;
-      rgb_value blue_;
-      rgb_value green_;
+      rgb_value red_;   //variavel correspondente à cor vermelha  
+      rgb_value blue_;  //variavel correspondente à cor azul
+      rgb_value green_; //variavel correspondente à cor verde
     public:
       Color();
       Color(const Color& c);
